@@ -1,12 +1,12 @@
 <?php 
 defined('C5_EXECUTE') or die(_("Access Denied."));
-class TwigPackage extends Package {
+class TwigPackage extends Package
+{
 
 	protected $pkgHandle = 'twig';
 	protected $appVersionRequired = '5.6.1';
 	protected $pkgVersion = '0.0.1';
 	
-    	
     public function on_start()
     {
         Events::extend('on_before_render', 'TwigTemplates', 'getViewClass', __DIR__ .'/libraries/twig/twig_templates.php');
@@ -34,5 +34,4 @@ class TwigPackage extends Package {
 
 		parent::upgrade($pkg);
 	}
-
 }
