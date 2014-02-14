@@ -16,15 +16,21 @@ class C5Twig
             'GlobalArea'        => 'makeGlobalArea',
             'GetStyleSheet'     => 'getStyleSheet',
             'GetScript'         => 'getScript',
-            'ElementRequired'   => 'elementRequired'
+            'Element'           => 'element'
         );
     }
     
+    /**
+     *  gets the Functions Array
+     */
     public function getFunctions()
     {
         return $this->functions;
     }
     
+    /**
+     *  Concrete5 GlobalArea
+     */
     public function makeGlobalArea( $name, $bloglimit = null )
     {
         $a = new GlobalArea( $name );
@@ -37,6 +43,9 @@ class C5Twig
         $a->display( $this->c );
     }
     
+    /**
+     *  Concrete5 Area
+     */
     public function makeArea( $name, $bloglimit = null )
     {
         $a = new Area( $name );
@@ -49,6 +58,12 @@ class C5Twig
         $a->display( $this->c );
     }
     
+    
+    /**
+     * get Stylesheet Paths
+     * if $is_editable is set, concrete5 Edit Themes feature can
+     * be used.
+     */
     public function getStyleSheet( $relative_path, $is_editable = false )
     {
         if( $is_editable )
@@ -61,16 +76,26 @@ class C5Twig
         }
     }
     
+    
+    /**
+     *  Get Scripts Paths
+     */
     public function getScript( $relative_path )
     {
         return $this->view->getThemePath() . '/' . $relative_path;
     }
     
-    public function elementRequired( $load )
+    
+    /**
+     *  Use the concrete5 Loader::element Function in a Template Tag
+     */
+    public function element( $load )
     {
         // Closures Requires PHP >= 5.4.0
-        $closure = function( $closure_load ){ echo Loader::element( $closure_load . '_required' ); };
+        $closure = function( $closure_load ){ echo Loader::element( $closure_load ); };
         
+        // Changing $this context,
+        // binding Loader::element to the View class
         $boundclosure = $closure->bindTo( $this->view );
         $boundclosure( $load );
     }
