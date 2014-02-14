@@ -25,9 +25,19 @@ class TwigTemplates
         foreach( $functions as $name => $method )
         {
             $function = new Twig_SimpleFunction( $name, array( $c5_twig, $method ) );
-            $twig->addFunction($function);
-        } 
+            $twig->addFunction( $function );
+        }
         
-        return $twig->render( $pageContent, array('name' => 'Fabien'));
+        $tests = $c5_twig->getTests();
+        
+        foreach( $tests as $name => $method )
+        {
+            $test = new Twig_SimpleTest( $name, array( $c5_twig, $method ) );
+            $twig->addTest( $test );
+        }
+        
+        $vars = array();
+        
+        return $twig->render( $pageContent, $vars );
     }
 }

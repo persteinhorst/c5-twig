@@ -3,6 +3,8 @@
 class C5Twig
 {
     private $functions;
+    private $tests;
+    
     private $c;
     private $view;
     
@@ -18,7 +20,16 @@ class C5Twig
             'GetScript'         => 'getScript',
             'Element'           => 'element'
         );
+        
+        $this->tests = array(
+            'IsEditMode' => 'isEditMode'                     
+        );
     }
+    
+    
+    #===========================================================================
+    #   GET METHODS
+    #===========================================================================
     
     /**
      *  gets the Functions Array
@@ -27,6 +38,15 @@ class C5Twig
     {
         return $this->functions;
     }
+    
+    public function getTests()
+    {
+        return $this->tests;
+    }
+    
+    #===========================================================================
+    #   TWIG C5 FUNCTIONS
+    #===========================================================================
     
     /**
      *  Concrete5 GlobalArea
@@ -66,14 +86,21 @@ class C5Twig
      */
     public function getStyleSheet( $relative_path, $is_editable = false )
     {
+        ob_start();
         if( $is_editable )
         {
-            return $this->view->getStyleSheet( $relative_path );
+            echo $this->view->getStyleSheet( $relative_path );
         }
         else
         {
-            return $this->view->getThemePath() . '/' . $relative_path;
+            echo $this->view->getThemePath() . '/' . $relative_path;
+            
         }
+        
+        $path = ob_get_contents();
+        ob_end_clean();
+        
+        echo sprintf('<link href="%s" rel="stylesheet">', $path );
     }
     
     
@@ -82,7 +109,13 @@ class C5Twig
      */
     public function getScript( $relative_path )
     {
-        return $this->view->getThemePath() . '/' . $relative_path;
+        ob_start();
+        echo $this->view->getThemePath() . '/' . $relative_path;
+        
+        $path = ob_get_contents();
+        ob_end_clean();
+        
+        echo sprintf('<script src="%s"></script>', $path);
     }
     
     
@@ -98,6 +131,15 @@ class C5Twig
         // binding Loader::element to the View class
         $boundclosure = $closure->bindTo( $this->view );
         $boundclosure( $load );
+    }
+    
+    #===========================================================================
+    #   TWIG C5 TESTS
+    #===========================================================================
+    
+    public function isEditmode()
+    {
+        return $this->c->isEditMode();
     }
     
 }
