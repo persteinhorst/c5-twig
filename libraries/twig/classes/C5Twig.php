@@ -13,9 +13,10 @@ class C5Twig
         
         $this->functions = array(
             'Area'              => 'makeArea',
-            'GlobalArea'       => 'makeGlobalArea',
-            'getStyleSheet'   => 'getStyleSheet',
-            'getScript'        => 'getScript'
+            'GlobalArea'        => 'makeGlobalArea',
+            'GetStyleSheet'     => 'getStyleSheet',
+            'GetScript'         => 'getScript',
+            'ElementRequired'   => 'elementRequired'
         );
     }
     
@@ -63,6 +64,15 @@ class C5Twig
     public function getScript( $relative_path )
     {
         return $this->view->getThemePath() . '/' . $relative_path;
+    }
+    
+    public function elementRequired( $load )
+    {
+        // Closures Requires PHP >= 5.4.0
+        $closure = function( $closure_load ){ echo Loader::element( $closure_load . '_required' ); };
+        
+        $boundclosure = $closure->bindTo( $this->view );
+        $boundclosure( $load );
     }
     
 }
