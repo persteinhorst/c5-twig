@@ -1,7 +1,7 @@
 c5-twig
 =======
 
-Enables the use of the Twig Template Engine inside of Concrete5 Themes
+Enables the use of the Twig template engine inside of Concrete5 themes
 
 Requirements
 ------------
@@ -12,5 +12,5 @@ Install instructions
 -------------------------
 * Download the repository
 * Copy the contents to 'concrete5_root'/packages/twig
-* Install the Package from the concrete5 dashboard.
+* Install the package from the Concrete5 dashboard.
 * Done!
